@@ -1,0 +1,43 @@
+\documentclass[10pt, a4paper,spanish]{article}
+
+\usepackage{./thestyle}
+\usepackage{./thevars}
+
+
+
+%-------------------------------------------------------------------------------
+
+\begin{document}
+
+	\maketitle % Insert title
+
+	\thispagestyle{fancy} % All pages have headers and footers
+
+
+%-------------------------------------------------------------------------------
+%	ABSTRACT
+%-------------------------------------------------------------------------------
+
+	\begin{abstract}
+		\noindent Abstract
+	\end{abstract}
+
+%-------------------------------------------------------------------------------
+%	TEXT
+%-------------------------------------------------------------------------------
+
+
+  \section{Introducción}
+
+    \paragraph{}
+		Prueba \cite{subject:taa}.
+
+
+
+%----------------------------------------------------------------------------------------
+%	Bibliographic references
+%----------------------------------------------------------------------------------------
+  \bibliographystyle{acm}
+  \bibliography{bib/misc,bib/examples}
+
+\end{document}
