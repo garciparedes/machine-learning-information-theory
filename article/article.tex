@@ -26,13 +26,108 @@
 %	TEXT
 %-----------------------------
 
+	\setcounter{section}{4}
 
-  \section{Introducción}
+	\section{Construir el árbol de decisión según el algoritmo \emph{ID3}, calculando todas las ganancias a la hora de escoger el siguiente atributo}
 
-    \paragraph{}
-		Prueba.
+		\begin{table}
+			\begin{center}
+				\includegraphics[width=0.5\textwidth]{table-exercise-4}
+				\caption{Datos para el algoritmo \emph{ID3}}
+			\end{center}
+			\label{e4:table}
+		\end{table}
+
+		\paragraph{}
+		El algoritmo \emph{ID3} consiste en un generador de árboles de decisión. Los árboles de decisión son estructuras jerárquicas utilizadas para resolver problemas de clasificación mediante técnicas de aprendizaje automático. En este caso, el algoritmo se basa en aprendizaje supervisado, es decir, en el periodo de aprendizaje utiliza un conjunto de datos en el cuál el valor de destino de la clasificación está fijado previamente.
+
+		\paragraph{}
+		El aprendizaje basado en árboles de decisión utiliza la generación de estructuras en forma de árbol etiquetado. Un árbol etiquetado consiste en un grafo $G$ no dirigido que posee las siguientes propiedades\cite{wiki:tree}:
+
+ 		\begin{itemize}
+			\setlength\itemsep{0em}
+ 			\item $G$ es conexo y no tiene ciclos.
+			\item $G$ no tiene ciclos y, si se añade alguna arista se forma un ciclo.
+			\item $G$ es conexo y si se le quita alguna arista deja de ser conexo.
+			\item $G$ es conexo y el grafo completo de 3 vértices $K_{3}$ no es un menor de $G$.
+			\item Dos vértices cualquiera de $G$ están conectados por un único camino simple.
+			\item Cada arista posee una etiqueta con la cuál se identifica.
+ 		\end{itemize}
+
+		\paragraph{}
+		En el contexto del aprendizaje, dichos árboles representan lo siguiente:
+
+		\begin{itemize}
+			\setlength\itemsep{0em}
+			\item Los vértices internos representan atributos de los datos
+			\item El proceso de clasificación comienza por el vértice padre del arbol (vértice sin padre).
+			\item Las aristas etiquetadas representan el valor que toma el atributo, de tal manera que si el dato toma el valor fijado por la etiqueta de la arista en el atributo fijado en el vértice padre, entonces el próximo atributo a inspeccionar es el que representa el vértice hijo al cual se llega a partir de dicha arista.
+			\item Los vértices hoja (vértices sin hijos) representa los valores que toman el valor de la clase en la cual será clasificado el dato.
+ 		\end{itemize}
+
+		\paragraph{}
+		Para la generación del árbol de decisión existen varias heurísticas, en el caso del algoritmo \emph{ID3} la intuición utilizada se basa en la disciplina de la teoría de información, que a grandes rasgos consiste en buscar recursivamente el atributo que mayor relación tenga con el valor esperado de la clase para dicho dato. Además se apoya en los conceptos de \textbf{Información}, \textbf{Entropía} y \textbf{Ganancia de Información}, los cuales se describen a continuación: Sea $S = \{ S_1, S_2, S_q \}$ el conjunto de valores discretos que puede tomar un determinado atributo y $P(S_i)$ la probabilidad de ocurrencia de dicho valor.
+
+		\begin{equation}
+			\label{eq:information}
+			I(S_i) = \log \frac{1}{P(S_i)}
+		\end{equation}
+
+		\paragraph{}
+		En la equación \eqref{eq:information} se describe la cantidad de información que proporciona un determinado valor $S_i$ del conjunto $S$ de posibles valores que puede tomar el dato.
+
+		\begin{equation}
+			\label{eq:entropy}
+			H(S) = \sum_{i=1}^q P(S_i)I(S_i)
+		\end{equation}
+
+		\paragraph{}
+		La equación \eqref{eq:entropy} describe la entropia de un atributo, esto puede traducirse como una medida de la cantidad de infomación que se puede obtener de un atributo $S$. La idea en que se basa esto consiste en la intuición de que si el conjunto de valores está uniformemente distribuido en su rango, la entropía del mismo tomará valores más altos, lo cuál hará que probablemente ese atributo sea más valioso para la clasificación si este está relacionado con la clase como se describe a continuación. En cambio, si la distribución de valores que toma el atributo está muy concentrada, probablemente este atributo suministrará un menor grado de información por lo que su entropía es menor.
 
 
+		\begin{equation}
+			\label{eq:ganancy}
+			G(S, A) = H(S) - \sum_{i=1}^k \frac{\mid S_{v_i} \mid }{ \mid S \mid }H(S_{v_i})
+		\end{equation}
+
+		\paragraph{}
+		La ganancia de información se define en la equación \eqref{eq:ganancy}. Esta es la medida que utiliza la heurística en que se basa el algoritmo de generación de árboles \emph{ID3}. Dicha equación proporciona el grado de relación entre un atributo $A$ del conjunto de datos y la clase $S$ en que se desean clasificar los mismos.
+
+		\paragraph{}
+
+		\begin{algorithm}
+			\emph{ID3} utiliza la equación \eqref{eq:ganancy} para generar un ránking con los atributos del conjunto de datos, seleccinando el de mayor ganancia respecto de la clase como vértice padre y creando tantas aristas como valores no vaciós tome dicho atributo. Repite este proceso por cada una de las aristas de forma recursiva eliminando el atributo selecionado y filtrando los datos de entrenamiento a las especificaciones fijadas por el camino seguido, hasta que todos los datos toman un único valor, en cuyo caso crea un vértice hoja con dicho valor, la disyunción de valores de la clase si se eliminan todos los atributos o \emph{desconocido} si no hay datos suficientes para continuar el proceso
+		\end{algorithm}
+
+		\paragraph{}
+		Para el cálculo de resultados se ha realizado una implementación en el lenguaje \emph{Python} la cual calcula el ranking citado anteriormente. Dicha implementación se puede visualizar a través de la ruta \url{https://github.com/garciparedes/python-examples/blob/master/machine_learning/utils/gainranking.py}. Además, se ha realizado una implementación básica de la generación del árbol de decisión mediante \emph{ID3} la cual se puede visualizar en \url{https://github.com/garciparedes/python-examples/blob/master/machine_learning/decision_tree/id3.py}
+
+
+		\paragraph{}
+		En este caso, el conjunto de datos se muestra en la tabla \ref{e4:table}. Está formado por un conjunto de 4 atributos, además del valor esperado de la clase. Todos ellos toman valores discretos, por lo que no es necesario realizar discretizaciones, lo cual se ajusta perfectamente a la entrada esperada del Algoritmo \emph{ID3}. La clase se corresponde con el atributo \textbf{PlayTennis}. A continuación se describe una ejecución paso a paso del algoritmo
+
+	\section{Calcular las siguientes ganancias en este ejemplo de 6 muestras}
+
+		\begin{table}
+			\begin{center}
+				\includegraphics[width=0.3\textwidth]{table-exercise-5}
+				\caption{Datos para cálculo de ganancias}
+			\end{center}
+			\label{e5:table}
+		\end{table}
+
+		\paragraph{}
+
+	\section{aplicar el algoritmo J48 al ejemplo anterior modificado, en el que se detallan valores numéricos de la temperatura. Explique el resultado del árbol resultante frente a la temperatura}
+
+		\begin{table}
+			\begin{center}
+				\includegraphics[width=0.5\textwidth]{table-exercise-6}
+				\caption{Datos para el algoritmo J48}
+			\end{center}
+		\end{table}
+
+		\paragraph{}
 
 %-----------------------------
 %	BIBLIOGRAPHY
