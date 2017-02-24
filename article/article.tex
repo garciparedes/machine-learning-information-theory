@@ -30,7 +30,7 @@
 
 	\section{Construir el árbol de decisión según el algoritmo \emph{ID3}, calculando todas las ganancias a la hora de escoger el siguiente atributo}
 
-		\begin{table}
+		\begin{table}[h]
 			\begin{center}
 				\includegraphics[width=0.5\textwidth]{table-exercise-4}
 				\caption{Datos para el algoritmo \emph{ID3}}
@@ -100,15 +100,68 @@
 		\end{algorithm}
 
 		\paragraph{}
-		Para el cálculo de resultados se ha realizado una implementación en el lenguaje \emph{Python} la cual calcula el ranking citado anteriormente. Dicha implementación se puede visualizar a través de la ruta \url{https://github.com/garciparedes/python-examples/blob/master/machine_learning/utils/gainranking.py}. Además, se ha realizado una implementación básica de la generación del árbol de decisión mediante \emph{ID3} la cual se puede visualizar en \url{https://github.com/garciparedes/python-examples/blob/master/machine_learning/decision_tree/id3.py}
+		Para el cálculo de resultados se ha realizado una implementación en el lenguaje \emph{Python} la cual calcula el ranking citado anteriormente. Dicha implementación se puede visualizar a través de la ruta \url{https://github.com/garciparedes/python-examples/blob/master/machine_learning/utils/gainranking.py}\cite{github:garciparedes-python-examples}. Además, se ha realizado una implementación básica de la generación del árbol de decisión mediante \emph{ID3} la cual se puede visualizar en \url{https://github.com/garciparedes/python-examples/blob/master/machine_learning/decision_tree/id3.py}\cite{github:garciparedes-python-examples}
 
 
 		\paragraph{}
-		En este caso, el conjunto de datos se muestra en la tabla \ref{e4:table}. Está formado por un conjunto de 4 atributos, además del valor esperado de la clase. Todos ellos toman valores discretos, por lo que no es necesario realizar discretizaciones, lo cual se ajusta perfectamente a la entrada esperada del Algoritmo \emph{ID3}. La clase se corresponde con el atributo \textbf{PlayTennis}. A continuación se describe una ejecución paso a paso del algoritmo
+		En este caso, el conjunto de datos se muestra en la tabla \ref{e4:table}. Está formado por un conjunto de 4 atributos, además del valor esperado de la clase. Todos ellos toman valores discretos, por lo que no es necesario realizar discretizaciones, lo cual se ajusta perfectamente a la entrada esperada del Algoritmo \emph{ID3}. La clase se corresponde con el atributo \textbf{PlayTennis}. A continuación se describe una ejecución paso a paso del algoritmo.
+
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{| c | c |}
+				\hline
+	 			Atributo 			& Ganancia \\ \hline
+				Outlook 			& 0.246750 \\ \hline
+				Humidity 			& 0.151836 \\ \hline
+				Wind 					& 0.048127 \\ \hline
+				Temperature 	& 0.029223 \\ \hline
+			\end{tabular}
+			\caption{ID3 sobre el conjunto de datos: Paso 1}
+			\label{e4:algorithm-step1}
+		\end{table}
+
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{| c | c |}
+				\hline
+				Atributo 			& Ganancia \\ \hline
+				Humidity 			& 0.970951 \\ \hline
+				Temperature 	& 0.570951 \\ \hline
+				Wind 					& 0.019973 \\ \hline
+			\end{tabular}
+			\caption{ID3 sobre el conjunto de datos: Paso 2}
+			\label{e4:algorithm-step2}
+		\end{table}
+
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{| c | c |}
+				\hline
+				Atributo 			& Ganancia \\ \hline
+				Wind 					& 0.970951 \\ \hline
+				Humidity 			& 0.019973 \\ \hline
+				Temperature 	& 0.019973 \\ \hline
+			\end{tabular}
+			\caption{ID3 sobre el conjunto de datos: Paso 3}
+			\label{e4:algorithm-step3}
+		\end{table}
+
+		\begin{figure}[h]
+			\begin{center}
+				\includegraphics[width=0.7\textwidth]{tree-exercise-4}
+				\caption{Árbol resultante tras ejecutar el algoritmo \emph{ID3} \cite{subject:taa}}
+			\end{center}
+			\label{e4:tree}
+		\end{figure}
+
+		\paragraph{}
+		El en las tablas \ref{e4:algorithm-step1}, \ref{e4:algorithm-step2} y \ref{e4:algorithm-step3} se muestran los resultados de los rankings de ganancia en cada paso del algoritmo \emph{ID3} implementado en \emph{Python} tal y como se cita anteriormente. El árbol resultante de la ejecución coincide con el presentado en las diapositivas de la asignatura \cite{subject:taa} y se muestra en la figura \ref{e4:tree}.
+
+
 
 	\section{Calcular las siguientes ganancias en este ejemplo de 6 muestras}
 
-		\begin{table}
+		\begin{table}[h]
 			\begin{center}
 				\includegraphics[width=0.3\textwidth]{table-exercise-5}
 				\caption{Datos para cálculo de ganancias}
@@ -117,10 +170,69 @@
 		\end{table}
 
 		\paragraph{}
+		Se pide calcular las ganancias resultantes trás discretizar el atributo \emph{Presión} de la tabla \ref{e5:table} mediante su particionado en los puntos $c_1 = 54$ y $c_2 = 85$. Denotaremos por $S$ al atributo de la clase. Lo siguiente es calcular su entropía tal y como se ha hecho en la equación \eqref{eq:e5-class-entropy}
+
+		\begin{equation}
+			\label{eq:e5-class-entropy}
+			H(S) = \frac{2}{6}\log(\frac{6}{2}) + \frac{4}{6}\log(\frac{6}{4}) = 0.636514...
+		\end{equation}
+
+		\paragraph{}
+		A continuación se muestra el número de instancias asociadas a cada clase para después calcular la ganancia de información obtenida tras dicha discretización a través de las equaciones \eqref{eq:e5-h1less},  \eqref{eq:e5-h1more} y \eqref{eq:e5-g1}.
+
+		\begin{itemize}
+			\setlength\itemsep{0em}
+			\item $A_{c_1} = \{ +, - \}$
+			\item $A_{c_1 <} \leftarrow \{ 2+, 0- \}$
+			\item $A_{c_1 >} \leftarrow \{ 1+, 3- \}$
+		\end{itemize}
+
+		\begin{equation}
+			\label{eq:e5-h1less}
+			H(A_{c_1 <}) = \frac{2}{2}\log(\frac{2}{2}) + \frac{0}{2}\log(\frac{2}{0}) = 0.0
+		\end{equation}
+
+		\begin{equation}
+			\label{eq:e5-h1more}
+			H(A_{c_1 >}) = \frac{1}{4}\log(\frac{4}{1}) + \frac{3}{4}\log(\frac{4}{3}) = 0.562335...
+		\end{equation}
+
+		\begin{equation}
+			\label{eq:e5-g1}
+			G(S, A_{c_1}) = 0.636514... - (\frac{2}{6} * 0.0 + \frac{4}{6} * 0.562335...) = 0.261624...
+		\end{equation}
+
+		\paragraph{}
+		A continuación se muestra el número de instancias asociadas a cada clase para después calcular la ganancia de información obtenida tras dicha discretización a través de las equaciones \eqref{eq:e5-h2less},  \eqref{eq:e5-h2more} y \eqref{eq:e5-g2}:
+
+		\begin{itemize}
+			\setlength\itemsep{0em}
+			\item $A_{c_2} = \{ +, - \}$
+			\item $A_{c_2 <} \leftarrow \{ 2+, 3- \}$
+			\item $A_{c_2 >} \leftarrow \{ 1+, 0- \}$
+		\end{itemize}
+
+		\begin{equation}
+			\label{eq:e5-h2less}
+			H(A_{c_2 <}) = \frac{2}{5}\log(\frac{5}{2}) + \frac{3}{5}\log(\frac{5}{3}) = 0.673011...
+		\end{equation}
+
+		\begin{equation}
+			\label{eq:e5-h2more}
+			H(A_{c_2 >}) = \frac{1}{1}\log(\frac{1}{1}) + \frac{0}{1}\log(\frac{1}{0}) = 0.0
+		\end{equation}
+
+		\begin{equation}
+			\label{eq:e5-g2}
+			G(S, A_{c_2}) = 0.636514... - (\frac{5}{6} * 0.673011... + \frac{1}{6} * 0.0) = 0.0756715...
+		\end{equation}
+
+		\paragraph{}
+		Puesto que la \textbf{Ganancia de Información} obtenida tras la partición por $c_1 = 54$ es significativamente mayor a la obtenida por $c_2 = 85$ debido a que $G(S, A_{c_1}) = 0.261624... > G(S, A_{c_2}) = 0.0756715...$, el particionamiento se realiza en el punto \textbf{$c_1$}.
 
 	\section{aplicar el algoritmo J48 al ejemplo anterior modificado, en el que se detallan valores numéricos de la temperatura. Explique el resultado del árbol resultante frente a la temperatura}
 
-		\begin{table}
+		\begin{table}[h]
 			\begin{center}
 				\includegraphics[width=0.5\textwidth]{table-exercise-6}
 				\caption{Datos para el algoritmo J48}
