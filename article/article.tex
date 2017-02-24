@@ -19,22 +19,23 @@
 %-----------------------------
 
 	\begin{abstract}
-		\noindent Abstract
+		\noindent En este documento se ha examinado el algoritmo básico de generación de árboles de decisisión a partir de heurísticas basadas en la teoría de información ID3. Para ello se ha realizado una descripción y una simulación paso a paso de su ejecución. Además, se ha realizado un caso práctico de discretización de atributos. Por último, se ha comprobado que el algoritmo J48 tan solo discretiza valores si la ganancia de información obtenida es mayor tras la partición que la del resto de atributos del conjunto de datos.
 	\end{abstract}
 
 %-----------------------------
 %	TEXT
 %-----------------------------
 
-	\setcounter{section}{4}
+	\setcounter{section}{3}
 
 	\section{Construir el árbol de decisión según el algoritmo \emph{ID3}, calculando todas las ganancias a la hora de escoger el siguiente atributo}
+	\label{e4}
 
 		\begin{table}[h]
 			\begin{center}
 				\includegraphics[width=0.5\textwidth]{table-exercise-4}
-				\caption{Datos para el algoritmo \emph{ID3}}
 			\end{center}
+			\caption{Datos para el algoritmo \emph{ID3}}
 			\label{e4:table}
 		\end{table}
 
@@ -148,9 +149,9 @@
 
 		\begin{figure}[h]
 			\begin{center}
-				\includegraphics[width=0.7\textwidth]{tree-exercise-4}
-				\caption{Árbol resultante tras ejecutar el algoritmo \emph{ID3} \cite{subject:taa}}
+				\includegraphics[width=0.7\textwidth]{tree}
 			\end{center}
+			\caption{Árbol resultante tras ejecutar el algoritmo \emph{ID3} \cite{subject:taa}}
 			\label{e4:tree}
 		\end{figure}
 
@@ -160,12 +161,13 @@
 
 
 	\section{Calcular las siguientes ganancias en este ejemplo de 6 muestras}
+	\label{e5}
 
 		\begin{table}[h]
 			\begin{center}
 				\includegraphics[width=0.3\textwidth]{table-exercise-5}
-				\caption{Datos para cálculo de ganancias}
 			\end{center}
+			\caption{Datos para cálculo de ganancias}
 			\label{e5:table}
 		\end{table}
 
@@ -231,15 +233,26 @@
 		Puesto que la \textbf{Ganancia de Información} obtenida tras la partición por $c_1 = 54$ es significativamente mayor a la obtenida por $c_2 = 85$ debido a que $G(S, A_{c_1}) = 0.261624... > G(S, A_{c_2}) = 0.0756715...$, el particionamiento se realiza en el punto \textbf{$c_1$}.
 
 	\section{aplicar el algoritmo J48 al ejemplo anterior modificado, en el que se detallan valores numéricos de la temperatura. Explique el resultado del árbol resultante frente a la temperatura}
+	\label{e6}
 
 		\begin{table}[h]
 			\begin{center}
 				\includegraphics[width=0.5\textwidth]{table-exercise-6}
-				\caption{Datos para el algoritmo J48}
 			\end{center}
+			\caption{Datos para el algoritmo J48}
+			\label{e6:table}
 		\end{table}
 
 		\paragraph{}
+		El resultado de aplicar el algoritmo J48 al conjunto de datos de la tabla \ref{e6:table} se muestra en la figura \ref{e6:tree}, que tal y como se puede apreciar, es el mismo que el del ejercicio \ref{e4}. El motivo por el cual no ha utilizado ninguna posible partición sobre el atributo numérico \emph{temperatura} es debido a que la ganancia de información que este proporciona no supera la del resto de atributos del conjunto de datos. Suponemos que la transformación a valores numéricos de \emph{temperatura} sigue una distribución aproximadamente similar a la indicada mediante valores discretos en la tabla \ref{e4:table}, por lo que los resultados de la ganancia de información seria similar a las obtenidas en dicho ejercicio. Puesto que el algoritmo \emph{J48} es una implementación mejorada de \emph{ID3}, en los casos en que no necesite aplicar dichas mejoras como discretización de atributos o podado de ramas, el resultado que obtiene es el mismo, tal y como a sucedido en esta ocasión.
+
+		\begin{figure}[h]
+			\begin{center}
+				\includegraphics[width=0.7\textwidth]{tree}
+			\end{center}
+			\caption{Árbol resultante tras ejecutar el algoritmo \emph{J48} \cite{subject:taa}}
+			\label{e6:tree}
+		\end{figure}
 
 %-----------------------------
 %	BIBLIOGRAPHY
